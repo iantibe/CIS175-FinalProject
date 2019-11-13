@@ -1,0 +1,42 @@
+@charset "ISO-8859-1";
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+.usernameline {
+	display: flex;	
+	}
+	
+.passwordline {
+	display: flex;
+	
+}
+
+.inputline {
+	display: flex;
+}
+	
+.newuser {
+	display: none;
+	
+}
+
+.mainsection {
+	display: flex;
+	
+}
+
+.infobar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	
+}
