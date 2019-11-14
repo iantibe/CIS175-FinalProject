@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert fancy title here</title>
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<link rel="stylesheet" type="text/css" href="css/layout.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="scripts/newuser.js"></script>
+<link rel="stylesheet" th:href="@{css/style.css}" href="css/style.css" />
+<link rel="stylesheet" th:href="@{css/layout.css}" href="css/layout.css" />
 </head>
 
 <body class="intropage">
@@ -49,5 +47,7 @@
 			</form>
 		</div>
 	</div>
+	<script type="text/javascript" th:src=@{scripts/newuser.js}></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </body>
 </html>
