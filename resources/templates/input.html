@@ -1,0 +1,23 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert New Contact</title>
+</head>
+<body>
+ <form th:object="${newContact}" th:action="@{/inputContact}" method='POST'>
+ 
+ Name: <input name="name" size="20"> <br />
+ Relationship: <input name="relationship" size="10"><br />
+ Phone Number: <input name="phone" size="20"><br />
+ Street: <input name="address.street" size="20"><br />
+ City: <input name="address.city" size="20"><br />
+ State:<input name="address.state" size="20"><br />
+ 
+        
+ <input name="submit" type="submit" value="submit" />
+         
+</form>
+<a href="viewAll">View all Contacts</a>
+</body>
+</html>
