@@ -64,6 +64,14 @@ public class BorrowItem {
 		this.setDueDate(dd);
 	}
 	
+	
+	//Constructor for lender only
+	public BorrowItem(Item item, User lender) {
+		super();
+		this.item = item;
+		this.lender = lender;
+	}
+	
 	// GETTERS AND SETTERS
 
 	public long getId() {
