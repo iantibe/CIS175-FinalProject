@@ -3,11 +3,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert fancy title here</title>
-<link rel="stylesheet" th:href="@{css/style.css}" href="css/style.css" />
-<link rel="stylesheet" th:href="@{css/layout.css}" href="css/layout.css" />
-<script type="text/javascript" th:src=@{scripts/newuser.js}></script>
+<link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
+<link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 </head>
 
 <body class="intropage">
@@ -50,5 +48,7 @@
 			</form>
 		</div>
 	</div>
-	</body>
+
+	<script type="text/javascript" th:src="@{~/scripts/newuser.js}"></script>
+</body>
 </html>

@@ -1,0 +1,9 @@
+diff a/src/main/resources/templates/index.html b/src/main/resources/templates/index.html	(rejected hunks)
+@@ -17,6 +17,7 @@
+  <link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
+  <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+++>>>>>>> Stashed changes
+  </head>
+  
+  <body class="intropage">
