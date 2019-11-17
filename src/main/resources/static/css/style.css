@@ -167,6 +167,14 @@ tr:nth-child(even) {
 	padding-right: 15px;
 }
 
+.name h3 {
+	margin-left: 10px;
+}
+
+.name h3:last-of-type {
+	color: blue;	
+}
+
 ul {
 	list-style: none;
 	display: grid;

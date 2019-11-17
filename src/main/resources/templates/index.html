@@ -6,6 +6,7 @@
 <link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
 <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{~/scripts/newuser.js}"></script>
 </head>
 
 <body class="intropage">
@@ -15,15 +16,15 @@
 			<h2>Lend or borrow items from our community of users</h2>
 			</div>
 		<div class="login">
-			<form>
+			<form th:action="@{/login}">
 			<h3>Login in</h3>
 			<div class="usernameline">
 				User Name
-				<input type="text" name="username">
+				<input type="text" th:name="username">
 			</div>
 			<div class="passwordline">
 				Password
-				<input type="password" name="passowrd">
+				<input type="text" th:name="password">
 			</div>
 			<div class="inputline">
 				<a>Add User</a>
@@ -32,15 +33,15 @@
 			</form>
 		</div>
 		<div class="login newuser">
-			<form>
+			<form th:action="@{/adduser}">
 			<h3>Add User</h3>
 			<div class="usernameline">
 				User Name
-				<input type="text" name="newusername">
+				<input type="text" th:name="newusername">
 			</div>
 			<div class="passwordline">
 				Password
-				<input type="password" name="newpassowrd">
+				<input type="text" th:name="newpassword">
 			</div>
 			<div class="inputline">
 				<input type="submit" value="Add User" name="adduser">
@@ -49,6 +50,6 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" th:src="@{~/scripts/newuser.js}"></script>
+	
 </body>
 </html>
