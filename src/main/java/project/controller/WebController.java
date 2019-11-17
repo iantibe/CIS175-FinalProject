@@ -2,12 +2,16 @@ package project.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import project.beans.Item;
 import project.beans.User;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
@@ -16,63 +20,88 @@ import project.repository.UserRepository;
 public class WebController {
 	@Autowired
 	UserRepository ur;
+	
+	@Autowired
 	ItemRepository ir;
-	
-	@GetMapping("/login")public String login(@RequestParam(name="username", required=true) String userName,
-			@RequestParam(name="password", required=false) String password, Model model) {
+
+	@PostMapping("/login")
+	public String userLogin(@ModelAttribute User u, Model model, HttpServletRequest request) {
+		String sendTo = "index";
 		
-		//checks if user did not input items into from
-		if(userName.equals(null) || password.equals(null)) {
-			return "index";
-		} 
+		List<User> users = ur.findAll();
 		
-		//looks up user name in database
-		List<User> userlookup = ur.findByUsername(userName);
-		
-		//returns to login if no items is found in database
-		if(userlookup.isEmpty() == true) {
-			return "index";
-		} 
-		
-		//forward to mainpage if password is found
-		//only one unique user, so it will be first item in list
-		if(userlookup.get(0).getPassword().equals(password)) {
-			model.addAttribute("username", userlookup.get(0).getUsername());
-			return "mainpage";
-		} else {
-			return "index";
+		for (User x : users) {
+			if (x.getUsername().equals(u.getUsername())) {
+				if (x.getPassword().equals(u.getPassword())) {
+					sendTo = "mainpage";
+					
+					// saving the current user's id and username to session
+					request.getSession().setAttribute("logId", x.getId());
+					request.getSession().setAttribute("currentUsername", x.getUsername());
+					
+					// NOTE:  In WebController, whenever you need to access the currently logged in user's ID or username from session
+					// in your method, include the argument "HttpServletRequest request" to get the current HttpRequest
+					// and then save the attribute as userId = request.getSession().getAttribute("logId");
+					// or userName = request.getSession().getAttribute("currentUsername");
+					// this will allow any other WebController method to access the currently logged in user's
+					// id or password.
+					
+					List<Item> allItems = ir.findAll();
+					model.addAttribute("allItems", allItems);
+				}
+			}
 		}
-				
-		}
-	
-	@GetMapping("/logout")public String logout(Model model) {
-		//returns to login page
+		
+		return sendTo;
+	}
+
+	@GetMapping("/logout")
+	public String logout(Model model, HttpServletRequest request) {
+		// destroys current session
+		request.getSession().invalidate();
+		
+		// returns to login page
 		return "index";
+	}
+
+	@PostMapping("/adduser")
+	public String addUser(Model model, HttpServletRequest request) {
+		String newUserName = request.getParameter("newusername");
+		String newPassword = request.getParameter("newpassword");
+		
+		// check for empty fields
+		if (newUserName.equals(null) || newPassword.equals(null)) {
+			return "index";
 		}
 
-	@GetMapping("/adduser")public String addUser(@RequestParam(name="newusername", required=true) String newUserName,
-			@RequestParam(name="newpassword", required=true) String newPassword, Model model) {
-		
-		//check for empty fields
-		if(newUserName.equals(null) || newPassword.equals(null)) {
-			return "index";
-		}
-				
-		//search database for name to check for duplicates
+		// search database for name to check for duplicates
 		List<User> newUserDatabase = ur.findByUsername(newUserName);
-		
-		//check for duplicates or process login
-		if(newUserDatabase.isEmpty() == false) {
+
+		// check for duplicates or process login
+		if (newUserDatabase.isEmpty() == false) {
 			return "index";
 		} else {
 			User newUser = new User();
 			newUser.setUsername(newUserName);
 			newUser.setPassword(newPassword);
 			ur.save(newUser);
-			model.addAttribute("username", newUser.getUsername());
+			
+			// get new user's ID from the DB for session
+			newUserDatabase = ur.findByUsername(newUserName);
+			for (User x : newUserDatabase) {
+				if (x.getUsername().equals(newUserName)) {
+					// add new user's ID and username to session.
+					request.getSession().setAttribute("logId", x.getId());
+					request.getSession().setAttribute("currentUsername", x.getUsername());
+				}
+			}
+			
+			List<Item> allItems = ir.findAll();
+			model.addAttribute("allItems", allItems);
+			
 			return "mainpage";
 		}
-		
-		}
-	
+
+	}
+
 }

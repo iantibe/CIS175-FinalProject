@@ -16,7 +16,7 @@
 			<h2>Lend or borrow items from our community of users</h2>
 			</div>
 		<div class="login">
-			<form th:action="@{/login}">
+			<form th:object="${userLogin}" th:action="@{/login}" method='POST'>
 			<h3>Login in</h3>
 			<div class="usernameline">
 				User Name
@@ -33,7 +33,7 @@
 			</form>
 		</div>
 		<div class="login newuser">
-			<form th:action="@{/adduser}">
+			<form th:action="@{/adduser}" method='POST'>
 			<h3>Add User</h3>
 			<div class="usernameline">
 				User Name
