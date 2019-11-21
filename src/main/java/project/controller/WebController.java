@@ -103,5 +103,16 @@ public class WebController {
 		}
 
 	}
+	
+	//This is a find all for the items
+	//The pages need a bit of adjusting so that they go through this before
+	//returning things to the mainpage where it displays the items
+	@GetMapping("/viewAll")
+	public String viewAllBooks(Model model) {
+		model.addAttribute("allItems", ir.findAll());
+		return "mainpage";
+	}
+	
+	//I also need to talk with you guys as to how things actually count as borrowed, so this is it for now!
 
 }
