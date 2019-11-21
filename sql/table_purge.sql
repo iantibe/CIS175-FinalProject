@@ -21,7 +21,7 @@ CREATE TABLE borrow_item (
     id INT NOT NULL AUTO_INCREMENT,
 	item_id INT NOT NULL,
 	lender_id INT NOT NULL,
-	borrower_id INT NOT NULL,
+	borrower_id INT,
 	borrow_date DATE,
 	due_date DATE,
 	return_date DATE,

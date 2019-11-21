@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 @Table(name="borrow_item")
 public class BorrowItem {
@@ -21,6 +23,7 @@ public class BorrowItem {
 	@Column(name="id")
 	private long id;
 	
+	@Autowired
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
     @JoinColumn(name="item_id")
 	private Item item;

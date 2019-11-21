@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import project.beans.BorrowItem;
 import project.beans.Item;
 import project.beans.User;
+import project.repository.BorrowItemRepository;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
 
@@ -23,6 +25,9 @@ public class WebController {
 	
 	@Autowired
 	ItemRepository ir;
+	
+	@Autowired
+	BorrowItemRepository bir;
 
 	@PostMapping("/login")
 	public String userLogin(@ModelAttribute User u, Model model, HttpServletRequest request) {
@@ -46,8 +51,9 @@ public class WebController {
 					// this will allow any other WebController method to access the currently logged in user's
 					// id or password.
 					
-					List<Item> allItems = ir.findAll();
-					model.addAttribute("allItems", allItems);
+					List<BorrowItem> userItems = bir.findByLender(x);
+					System.out.println("User Items Size: " + userItems.size());
+					model.addAttribute("userItems", userItems);
 				}
 			}
 		}

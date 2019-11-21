@@ -39,9 +39,9 @@
 				<th>Item</th>
 				<th>Type</th>
 			</tr>
-			<tr th:each="currentItem : ${allItems}" th:unless="${currentItem == null}">
-				<td th:text="${currentItem.name}" />
-				<td th:text="${currentItem.type}" />
+			<tr th:each="currentItem : ${userItems}" th:unless="${userItems == null}">
+				<td th:text="${currentItem.item.name}" />
+				<td th:text="${currentItem.item.type}" />
 		</table>
 		</div>
 		<div class="itemsout">
