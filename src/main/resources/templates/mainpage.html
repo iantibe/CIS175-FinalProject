@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<link rel="stylesheet" type="text/css" href="css/layout.css" />
+<link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
+<link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <header>
@@ -17,7 +18,7 @@
 	//display current borrow rating here
 	</div>
 	<div class="name">
-	//display user name here
+	<h3>Hello,</h3><h3 th:text="${session.currentUsername}"></h3>
 	</div>
 </div>
 
@@ -26,7 +27,7 @@
 		<ul>
 			<li><a href="manage.html">Manage items</a></li>
 			<li><a href="borrow.html">Borrow Items</a></li>
-			<li><a href="">Logout</a></li>
+			<li><a href="logout">Logout</a></li>
 		</ul>
 	</div>
 	
@@ -38,9 +39,9 @@
 				<th>Item</th>
 				<th>Type</th>
 			</tr>
-			<tr>
-				<th>Dummy Data</th>
-				<th>Dummy Data</th>
+			<tr th:each="currentItem : ${allItems}" th:unless="${currentItem == null}">
+				<td th:text="${currentItem.name}" />
+				<td th:text="${currentItem.type}" />
 		</table>
 		</div>
 		<div class="itemsout">
