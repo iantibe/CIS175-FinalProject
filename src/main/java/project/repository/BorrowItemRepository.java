@@ -11,4 +11,5 @@ import project.beans.User;
 @Repository
 public interface BorrowItemRepository extends JpaRepository<BorrowItem, Long> {
 	List<BorrowItem> findByLender(User l);
+	List<BorrowItem> findByBorrower(User b);
 }
