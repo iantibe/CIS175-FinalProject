@@ -62,7 +62,6 @@ public class WebController {
 					// id or password.
 
 					List<UserItem> userItems = uir.findByUser(x);
-					System.out.println("User Items Size: " + userItems.size());
 					model.addAttribute("userItems", userItems);
 
 					List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
@@ -74,7 +73,6 @@ public class WebController {
 							}
 						}
 					}
-					System.out.println("items lent out: " + itemsLentOut.size());
 					model.addAttribute("lentItems", itemsLentOut);
 				}
 			}
@@ -170,7 +168,6 @@ public class WebController {
 					model.addAttribute("lentItems", itemsLentOut);
 				}
 			}
-
 			return "mainpage";
 		}
 
@@ -195,8 +192,7 @@ public class WebController {
 
 		if (request.getSession().getAttribute("logId") != null) {
 			long uid = (Long) request.getSession().getAttribute("logId");
-			User currentUser = ur.findById(uid)
-					.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + uid));
+			User currentUser = ur.findById(uid).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + uid));
 			sendTo = "returnItemPage";
 
 			List<UserItem> userItems = uir.findByUser(currentUser);
@@ -208,12 +204,10 @@ public class WebController {
 					if (temp.getReturnDate() == null) {
 						itemsLentOut.add(temp);
 					}
-
 				}
 			}
 			model.addAttribute("lentItems", itemsLentOut);
 		}
-		System.out.println("Sending to: " + sendTo);
 		return sendTo;
 	}
 
@@ -229,9 +223,6 @@ public class WebController {
 	@PostMapping("/saveReturnItem")
 	public String saveReturnItem(@ModelAttribute BorrowItem i, Model model, HttpServletRequest request) {
 		String sendTo = "index";
-		System.out.println("");
-		System.out.println("BorrowItem ID: " + i.getId());
-		System.out.println("");
 
 		if (i != null) {
 			BorrowItem updateThis = bir.findById(i.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid Id:" + i.getId()));
@@ -249,7 +240,6 @@ public class WebController {
 					if (temp.getReturnDate() == null) {
 						itemsLentOut.add(temp);
 					}
-
 				}
 			}
 			model.addAttribute("lentItems", itemsLentOut);
