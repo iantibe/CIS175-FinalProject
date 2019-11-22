@@ -45,15 +45,18 @@
 		</table>
 		</div>
 		<div class="itemsout">
-		<h2>Items currently borrowed</h2>
+		<h2>Items currently lent out</h2>
 			<table>
 				<tr>
 					<th>Item</th>
 					<th>Type</th>
+					<th>Lent to</th>
 				</tr>
 				<tr>
-					<th>Dummy Data</th>
-					<th>Dummy Data</th>
+				<tr th:each="currentItem : ${lentItems}" th:unless="${lentItems == null}">
+					<td th:text="${currentItem.userItem.item.name}" />
+					<td th:text="${currentItem.userItem.item.type}" />
+					<td th:text="${currentItem.borrower.username}" />
 				</tr>
 			</table>
 		</div>

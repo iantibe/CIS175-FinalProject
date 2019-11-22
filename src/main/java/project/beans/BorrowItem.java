@@ -25,12 +25,8 @@ public class BorrowItem {
 	
 	@Autowired
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="item_id")
-	private Item item;
-	
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="lender_id")
-	private User lender;
+    @JoinColumn(name="useritem_id")
+	private UserItem userItem;
 	
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
     @JoinColumn(name="borrower_id")
@@ -50,29 +46,19 @@ public class BorrowItem {
 	public BorrowItem() {
 	}
 	
-	public BorrowItem(long id, Item i, User b, User l, LocalDate bd, LocalDate dd) {
+	public BorrowItem(long id, UserItem ui, User b, LocalDate bd, LocalDate dd) {
 		this.setId(id);
-		this.setItem(i);
+		this.setUserItem(ui);
 		this.setBorrower(b);
-		this.setLender(l);
 		this.setBorrowDate(bd);
 		this.setDueDate(dd);
 	}
 	
-	public BorrowItem(Item i, User b, User l, LocalDate bd, LocalDate dd) {
-		this.setItem(i);
+	public BorrowItem(UserItem ui, User b, LocalDate bd, LocalDate dd) {
+		this.setUserItem(ui);
 		this.setBorrower(b);
-		this.setLender(l);
 		this.setBorrowDate(bd);
 		this.setDueDate(dd);
-	}
-	
-	
-	//Constructor for lender only
-	public BorrowItem(Item item, User lender) {
-		super();
-		this.item = item;
-		this.lender = lender;
 	}
 	
 	// GETTERS AND SETTERS
@@ -84,23 +70,15 @@ public class BorrowItem {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public Item getItem() {
-		return item;
+	
+	public UserItem getUserItem() {
+		return this.userItem;
 	}
-
-	public void setItem(Item item) {
-		this.item = item;
+	
+	public void setUserItem(UserItem ui) {
+		this.userItem = ui;
 	}
-
-	public User getLender() {
-		return lender;
-	}
-
-	public void setLender(User lender) {
-		this.lender = lender;
-	}
-
+	
 	public User getBorrower() {
 		return borrower;
 	}

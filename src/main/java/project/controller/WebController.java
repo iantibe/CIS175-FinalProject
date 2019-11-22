@@ -1,5 +1,6 @@
 package project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import project.beans.BorrowItem;
 import project.beans.Item;
 import project.beans.User;
+import project.beans.UserItem;
 import project.repository.BorrowItemRepository;
 import project.repository.ItemRepository;
+import project.repository.UserItemRepository;
 import project.repository.UserRepository;
 
 @Controller
@@ -25,6 +28,9 @@ public class WebController {
 	
 	@Autowired
 	ItemRepository ir;
+	
+	@Autowired
+	UserItemRepository uir;
 	
 	@Autowired
 	BorrowItemRepository bir;
@@ -51,9 +57,18 @@ public class WebController {
 					// this will allow any other WebController method to access the currently logged in user's
 					// id or password.
 					
-					List<BorrowItem> userItems = bir.findByLender(x);
+					List<UserItem> userItems = uir.findByUser(x);
 					System.out.println("User Items Size: " + userItems.size());
 					model.addAttribute("userItems", userItems);
+					
+					List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
+					for (UserItem i : userItems) {
+						if (bir.findByUserItem(i) != null) {
+							itemsLentOut.add(bir.findByUserItem(i));
+						}
+					}
+					System.out.println("items lent out: " + itemsLentOut.size());
+					model.addAttribute("lentItems", itemsLentOut);
 				}
 			}
 		}
