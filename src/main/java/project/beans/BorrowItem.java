@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,38 +15,43 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import project.repository.LocalDateAttributeConverter;
+import project.repository.StringToLocalDateAttributeConverter;
 
 @Entity
-@Table(name="borrow_item")
+@Table(name = "borrow_item")
 public class BorrowItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private long id;
-	
+
 	@Autowired
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="useritem_id")
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "useritem_id")
 	private UserItem userItem;
-	
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="borrower_id")
+
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "borrower_id")
 	private User borrower;
-	
-	@Column(name="borrow_date")
+
+	@Column(name = "borrow_date")
 	private LocalDate borrowDate;
-	
-	@Column(name="due_date")
+
+	@Column(name = "due_date")
 	private LocalDate dueDate;
 	
-	@Column(name="return_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "return_date")
 	private LocalDate returnDate;
-	
+
 	// CONSTRUCTORS
-	
+
 	public BorrowItem() {
 	}
-	
+
 	public BorrowItem(long id, UserItem ui, User b, LocalDate bd, LocalDate dd) {
 		this.setId(id);
 		this.setUserItem(ui);
@@ -53,14 +59,14 @@ public class BorrowItem {
 		this.setBorrowDate(bd);
 		this.setDueDate(dd);
 	}
-	
+
 	public BorrowItem(UserItem ui, User b, LocalDate bd, LocalDate dd) {
 		this.setUserItem(ui);
 		this.setBorrower(b);
 		this.setBorrowDate(bd);
 		this.setDueDate(dd);
 	}
-	
+
 	// GETTERS AND SETTERS
 
 	public long getId() {
@@ -70,15 +76,15 @@ public class BorrowItem {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public UserItem getUserItem() {
 		return this.userItem;
 	}
-	
+
 	public void setUserItem(UserItem ui) {
 		this.userItem = ui;
 	}
-	
+
 	public User getBorrower() {
 		return borrower;
 	}
@@ -110,7 +116,5 @@ public class BorrowItem {
 	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
-	
-	
 
 }
