@@ -18,13 +18,10 @@ public class BorrowRating {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private long id;
-	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="lender_id")
-	private User lender;
 	
 	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-    @JoinColumn(name="borrower_id")
-	private User borrower;
+    @JoinColumn(name="borrowitem_id")
+	private BorrowItem borrowItem;
 	
 	@Column(name="rating")
 	private int rating;
@@ -33,18 +30,16 @@ public class BorrowRating {
 		super();
 	}
 
-	public BorrowRating(User lender, User borrower, int rating) {
+	public BorrowRating(BorrowItem bi, int rating) {
 		super();
-		this.lender = lender;
-		this.borrower = borrower;
+		this.borrowItem = bi;
 		this.rating = rating;
 	}
 
-	public BorrowRating(long id, User lender, User borrower, int rating) {
+	public BorrowRating(long id, BorrowItem bi, int rating) {
 		super();
 		this.id = id;
-		this.lender = lender;
-		this.borrower = borrower;
+		this.borrowItem = bi;
 		this.rating = rating;
 	}
 
@@ -56,20 +51,12 @@ public class BorrowRating {
 		this.id = id;
 	}
 
-	public User getLender() {
-		return lender;
+	public BorrowItem getBorrowItem() {
+		return this.borrowItem;
 	}
-
-	public void setLender(User lender) {
-		this.lender = lender;
-	}
-
-	public User getBorrower() {
-		return borrower;
-	}
-
-	public void setBorrower(User borrower) {
-		this.borrower = borrower;
+	
+	public void setBorrowItem(BorrowItem bi) {
+		this.borrowItem = bi;
 	}
 
 	public int getRating() {
@@ -82,6 +69,8 @@ public class BorrowRating {
 
 	@Override
 	public String toString() {
-		return "BorrowRating [id=" + id + ", lender=" + lender + ", borrower=" + borrower + ", rating=" + rating + "]";
+		return "BorrowRating [id=" + id + ", borrowItem=" + borrowItem + ", rating=" + rating + "]";
 	}
+
+	
 }

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import project.beans.BorrowItem;
+import project.beans.BorrowRating;
 import project.beans.User;
 import project.beans.UserItem;
 import project.repository.BorrowItemRepository;
+import project.repository.BorrowRatingRepository;
 import project.repository.ItemRepository;
 import project.repository.UserItemRepository;
 import project.repository.UserRepository;
@@ -34,6 +36,9 @@ public class WebController {
 
 	@Autowired
 	BorrowItemRepository bir;
+	
+	@Autowired
+	BorrowRatingRepository brr;
 
 	@PostMapping("/login")
 	public String userLogin(@ModelAttribute User u, Model model, HttpServletRequest request) {
@@ -227,23 +232,20 @@ public class WebController {
 		if (i != null) {
 			BorrowItem updateThis = bir.findById(i.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid Id:" + i.getId()));
 			updateThis.setReturnDate(i.getReturnDate());
-			sendTo = "returnItemPage";
+			sendTo = "rateBorrower";
 			bir.save(updateThis);
-			User currentUser = updateThis.getUserItem().getUser();
-			List<UserItem> userItems = uir.findByUser(currentUser);
-			List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
-
-			for (UserItem ui : userItems) {
-				if (bir.findByUserItem(ui) != null) {
-					BorrowItem temp = bir.findByUserItem(ui);
-
-					if (temp.getReturnDate() == null) {
-						itemsLentOut.add(temp);
-					}
-				}
-			}
-			model.addAttribute("lentItems", itemsLentOut);
+			
+			BorrowRating newRating = new BorrowRating ();
+			newRating.setBorrowItem(updateThis);
+			model.addAttribute("borrowrating", newRating);
+			
 		}
 		return sendTo;
+	}
+	
+	@PostMapping("/saveRating")
+	public String saveRating(@ModelAttribute BorrowRating br, Model model, HttpServletRequest request) {
+		brr.save(br);
+		return returnHome(model, request);
 	}
 }

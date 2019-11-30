@@ -31,30 +31,13 @@
 	</div>
 	
 	<div class="content">
-		<div class="itemsuploaded">
-		<h2>Pick A Return Date for your item</h2>
-		<table>
-			<tr>
-				<th>Item</th>
-				<th>Type</th>
-				<th>Lent To</th>
-				<th>Lent Date</th>
-				<th>Due Date</th>
-			</tr>
-			<tr>
-				<td th:text="${currentItem.userItem.item.name}" />
-				<td th:text="${currentItem.userItem.item.type}" />
-				<td th:text="${currentItem.borrower.username}" />
-				<td th:text="${currentItem.borrowDate}" />
-				<td th:text="${currentItem.dueDate}" />
-			<tr>
-		</table>
+		<div>
+			<h2>Rate This Borrower</h2>
 		</div>
-		
-		<div class="itemsuploaded">
-			<form th:action="@{/saveReturnItem}" method='POST' th:object="${currentItem}" style="margin-left:85px; margin-top: 50px;">
-				<div>Return Date: <input type="date" th:field="*{returnDate}" id="returnDate" /></div>
-				<div><input type="hidden" th:field="*{id}" th:value="${currentItem.id}" id="id" /></div>
+		<div>
+			<form th:action="@{/saveRating}" method='POST' th:object="${borrowrating}" style="margin-left:85px; margin-top: 50px;">
+				<div>Rating: <input type="number" name="rating" id="rating" th:field="*{rating}" min="1" max="5" /></div>
+				<div><input type="hidden" th:field="*{borrowItem.id}" th:value="${borrowrating.borrowItem.id}" id="borrowItemid" /></div>
 				<div><input type="submit" value="submit"/></div>
 			</form>
 		</div>

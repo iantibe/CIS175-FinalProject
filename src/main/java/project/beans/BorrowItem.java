@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,9 +15,6 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import project.repository.LocalDateAttributeConverter;
-import project.repository.StringToLocalDateAttributeConverter;
 
 @Entity
 @Table(name = "borrow_item")
@@ -37,9 +33,11 @@ public class BorrowItem {
 	@JoinColumn(name = "borrower_id")
 	private User borrower;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "borrow_date")
 	private LocalDate borrowDate;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "due_date")
 	private LocalDate dueDate;
 	
