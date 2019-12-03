@@ -299,4 +299,9 @@ public class WebController {
 		
 		return "borrow";
 	}
+	@GetMapping("/viewAllBorrowers")
+	public String viewAllBorrowers(Model model) {
+		model.addAttribute("allItems", ur.findAll());
+		return "viewAllBorrowers";
+	}
 }
