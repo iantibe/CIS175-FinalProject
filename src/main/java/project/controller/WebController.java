@@ -253,19 +253,25 @@ public class WebController {
 	
 	@GetMapping("/lend")
 	public String lendItem(Model model, HttpServletRequest request) {
-		List<User> userList = ur.findAll();
-		
 		Long currentUserId = (Long) request.getSession().getAttribute("logId");
-		
 		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
-							
+		
+		//remove yourself from list. You can left stuff to yourself
+		List<User> userList = ur.findAll();
 		userList.remove(userList.indexOf(currentUser));
 		
 		model.addAttribute("user", userList);
-				
+			
 		List<UserItem> currentUserItems = uir.findByUser(currentUser);
+		List<UserItem> displayList = new ArrayList<UserItem>();
 				
-		model.addAttribute("item", currentUserItems);
+		for (UserItem i : currentUserItems) {
+			if (bir.findByUserItemAndReturnDate(i, null).isEmpty()) {
+				displayList.add(i);
+			}
+		}
+				
+		model.addAttribute("item", displayList);
 		
 		return "borrow";
 	}
@@ -275,28 +281,45 @@ public class WebController {
 		Long name = Long.parseLong(request.getParameter("user"));
 		Long item = Long.parseLong(request.getParameter("item"));
 		
-		User lendee = ur.findById(name).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + name));
+		User lendee = ur.findById(name).orElseThrow(() -> new IllegalArgumentException("Invalid user:" + name));
 		UserItem itemToLend = uir.findById(item).orElseThrow(() -> new IllegalArgumentException("Invalid "));
-		
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
 				
-		//String lendDateString = request.getParameter("lenddate");
-		//String dueDateString = request.getParameter("duedate");
+		String lendDateString = request.getParameter("lenddate");
+		String dueDateString = request.getParameter("duedate");
 		
-		//LocalDate dueDate = LocalDate.parse(dueDateString, formatter);
-		//LocalDate lendDate = LocalDate.parse(lendDateString, formatter);
+		LocalDate dueDate = LocalDate.parse(dueDateString);
+		LocalDate lendDate = LocalDate.parse(lendDateString);
 		
 		BorrowItem itemToStore = new BorrowItem();
-		//itemToStore.setBorrowDate(lendDate);
+		itemToStore.setBorrowDate(lendDate);
 		itemToStore.setBorrower(lendee);
-	//	itemToStore.setDueDate(dueDate);
+		itemToStore.setDueDate(dueDate);
 		itemToStore.setUserItem(itemToLend);
-		
-		
+			
 		bir.save(itemToStore);
 		
-		model.addAttribute("result", "Item Sucessfully Lent!");
+		model.addAttribute("result", "Item Sucessfully Lent! Lend Another item or select item from menu");
 		
+		Long currentUserId = (Long) request.getSession().getAttribute("logId");
+		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
+		
+		//remove yourself from list. You can left stuff to yourself
+		List<User> userList = ur.findAll();
+		userList.remove(userList.indexOf(currentUser));
+		
+		model.addAttribute("user", userList);
+			
+		List<UserItem> currentUserItems = uir.findByUser(currentUser);
+		List<UserItem> displayList = new ArrayList<UserItem>();
+				
+		for (UserItem i : currentUserItems) {
+			if (bir.findByUserItemAndReturnDate(i, null).isEmpty()) {
+				displayList.add(i);
+			}
+		}
+				
+		model.addAttribute("item", displayList);
+				
 		return "borrow";
 	}
 	@GetMapping("/viewAllBorrowers")
