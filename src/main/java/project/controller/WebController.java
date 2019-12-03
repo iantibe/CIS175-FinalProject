@@ -1,5 +1,7 @@
 package project.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,5 +249,54 @@ public class WebController {
 	public String saveRating(@ModelAttribute BorrowRating br, Model model, HttpServletRequest request) {
 		brr.save(br);
 		return returnHome(model, request);
+	}
+	
+	@GetMapping("/lend")
+	public String lendItem(Model model, HttpServletRequest request) {
+		List<User> userList = ur.findAll();
+		
+		Long currentUserId = (Long) request.getSession().getAttribute("logId");
+		
+		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
+							
+		userList.remove(userList.indexOf(currentUser));
+		
+		model.addAttribute("user", userList);
+				
+		List<UserItem> currentUserItems = uir.findByUser(currentUser);
+				
+		model.addAttribute("item", currentUserItems);
+		
+		return "borrow";
+	}
+	
+	@PostMapping("/lend")
+	public String saveLentItem(Model model, HttpServletRequest request) {
+		Long name = Long.parseLong(request.getParameter("user"));
+		Long item = Long.parseLong(request.getParameter("item"));
+		
+		User lendee = ur.findById(name).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + name));
+		UserItem itemToLend = uir.findById(item).orElseThrow(() -> new IllegalArgumentException("Invalid "));
+		
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+				
+		//String lendDateString = request.getParameter("lenddate");
+		//String dueDateString = request.getParameter("duedate");
+		
+		//LocalDate dueDate = LocalDate.parse(dueDateString, formatter);
+		//LocalDate lendDate = LocalDate.parse(lendDateString, formatter);
+		
+		BorrowItem itemToStore = new BorrowItem();
+		//itemToStore.setBorrowDate(lendDate);
+		itemToStore.setBorrower(lendee);
+	//	itemToStore.setDueDate(dueDate);
+		itemToStore.setUserItem(itemToLend);
+		
+		
+		bir.save(itemToStore);
+		
+		model.addAttribute("result", "Item Sucessfully Lent!");
+		
+		return "borrow";
 	}
 }

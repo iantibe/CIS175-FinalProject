@@ -18,12 +18,37 @@
 		<ul>
 			<li><a href="index.html">Home</a></li>
 			<li><a href="manage.html">Manage Items</a></li>
-			<li><a href="">Logout</a></li>
+			<li><a href="logout">Logout</a></li>
 		</ul>
 	</div>
 	
-	<div class="content">
+	<div class="borrowcontent">
+		<form th:action="@{/lend}" method="post">
+		<div class="userselect">
+			<h2>Select User to Lend item</h2>
+			<select  name="user">
+				<option th:each="currentuser : ${user}" th:value="${currentuser.id}" th:text=${currentuser.username}></option>
+			</select>
+			
+		</div>
+		<div class="itemselect">
+			<h2>Select Item To Lend</h2>
+			<select name ="item">
+				<option th:each="currentitem : ${item}" th:value="${currentitem.id}" th:text="${currentitem.item.name}"></option>
+			</select>
+		</div>
 		
+		<div class="lenddate">
+			<h2>Lend Start Date</h2>
+			<input type="date" name="lenddate">
+		</div>
+		
+		<div class="duedate">
+			<h2>Due Date</h2>
+			<input type="date" name="duedate">
+		</div>
+		<input type="submit" value="Submit">
+		</form>		
 		
 	</div>
 </div>

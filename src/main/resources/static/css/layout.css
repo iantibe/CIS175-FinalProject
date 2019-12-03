@@ -45,3 +45,24 @@ form {
 	display: flex;
 	
 }
+
+.borrowcontent form {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	margin-top: 30px;
+}
+
+.borrowcontent {
+	width: 100%;
+}
+.userselect {
+	display: flex;
+	flex-direction: column;
+}
+
+.itemselect {
+	display: flex;
+	flex-direction: column;
+	
+}
