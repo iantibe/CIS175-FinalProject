@@ -1,5 +1,6 @@
 package project.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ import project.beans.UserItem;
 public interface BorrowItemRepository extends JpaRepository<BorrowItem, Long> {
 	BorrowItem findByUserItem(UserItem ui);
 	List<BorrowItem> findByBorrower(User b);
+	List<BorrowItem> findByUserItemAndReturnDate(UserItem u, LocalDate date);
 }

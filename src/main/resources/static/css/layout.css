@@ -66,3 +66,12 @@ form {
 	flex-direction: column;
 	
 }
+
+.datawindow {
+	width: 100%;
+}
+
+.resultmessage {
+	margin-top: 50px;
+	text-align: center;
+}
