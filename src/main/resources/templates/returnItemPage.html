@@ -25,41 +25,31 @@
 <div class="mainsection">
 	<div class="menu">
 		<ul>
-			<li><a href="manage.html">Manage items</a></li>
-			<li><a href="lend">Lend Item</a></li>
-			<li><a href="return">Return an Item</a></li>
+			<li><a href="home">Return Home</a></li>
 			<li><a href="logout">Logout</a></li>
 		</ul>
 	</div>
 	
 	<div class="content">
 		<div class="itemsuploaded">
-		<h2>All of my Items</h2>
+		<h2>Current Items Lent Out</h2>
 		<table>
 			<tr>
 				<th>Item</th>
 				<th>Type</th>
+				<th>Lent To</th>
+				<th>Lent Date</th>
+				<th>Due Date</th>
+				<th>Return Date</th>
 			</tr>
-			<tr th:each="currentItem : ${userItems}" th:unless="${userItems == null}">
-				<td th:text="${currentItem.item.name}" />
-				<td th:text="${currentItem.item.type}" />
+			<tr th:each="currentItem : ${lentItems}" th:unless="${lentItems == null}">
+				<td th:text="${currentItem.userItem.item.name}" />
+				<td th:text="${currentItem.userItem.item.type}" />
+				<td th:text="${currentItem.borrower.username}" />
+				<td th:text="${currentItem.borrowDate}" />
+				<td th:text="${currentItem.dueDate}" />
+				<td><a th:href="@{/returnItem/{id}(id=${currentItem.id})}">Return This Item</a></td>
 		</table>
-		</div>
-		<div class="itemsout">
-		<h2>My Items currently lent out</h2>
-			<table>
-				<tr>
-					<th>Item</th>
-					<th>Type</th>
-					<th>Lent to</th>
-				</tr>
-				<tr>
-				<tr th:each="currentItem : ${lentItems}" th:unless="${lentItems == null}">
-					<td th:text="${currentItem.userItem.item.name}" />
-					<td th:text="${currentItem.userItem.item.type}" />
-					<td th:text="${currentItem.borrower.username}" />
-				</tr>
-			</table>
 		</div>
 	</div>
 </div>

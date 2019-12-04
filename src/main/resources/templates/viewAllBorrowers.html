@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
+<link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<header>
+	<h1>Bitch, Where's my stuff</h1>
+	<h2>Lend or borrow items from our community of users</h2>
+</header>
+<div class="infobar">
+	<div class="currentrating">
+	//display current borrow rating here
+	</div>
+	<div class="name">
+	<h3>Hello,</h3><h3 th:text="${session.currentUsername}"></h3>
+	</div>
+</div>
+<div class="mainsection">
+	<div class="menu">
+		<ul>
+			<li><a href="/home">Return Home</a></li>
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	</div>
+		<div class="content">
+		<div>
+			<h2>View All Borrowers</h2>
+		</div>
+		<div>
+			<form>
+				<table>
+				<!-- This Table isn't working yet, I am going to work on it some more tomorrow, Daniel -->
+					<tr th:each="currentUsers : ${user}" >
+ 					<td th:text="${currentUsers.id}" />
+    				<td th:text="${currentUsers.username}" />
+   					<td><a href="/viewRatings">View All Ratings</a></td>
+					</tr>
+					</table>
+					</form>
+		</div>
+		
+	</div>
+</div>
+</body>
+</html>

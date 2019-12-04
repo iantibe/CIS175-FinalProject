@@ -25,42 +25,40 @@
 <div class="mainsection">
 	<div class="menu">
 		<ul>
-			<li><a href="manage.html">Manage items</a></li>
-			<li><a href="lend">Lend Item</a></li>
-			<li><a href="return">Return an Item</a></li>
-			<li><a href="logout">Logout</a></li>
+			<li><a href="/home">Return Home</a></li>
+			<li><a href="/logout">Logout</a></li>
 		</ul>
 	</div>
 	
 	<div class="content">
 		<div class="itemsuploaded">
-		<h2>All of my Items</h2>
+		<h2>Pick A Return Date for your item</h2>
 		<table>
 			<tr>
 				<th>Item</th>
 				<th>Type</th>
+				<th>Lent To</th>
+				<th>Lent Date</th>
+				<th>Due Date</th>
 			</tr>
-			<tr th:each="currentItem : ${userItems}" th:unless="${userItems == null}">
-				<td th:text="${currentItem.item.name}" />
-				<td th:text="${currentItem.item.type}" />
+			<tr>
+				<td th:text="${currentItem.userItem.item.name}" />
+				<td th:text="${currentItem.userItem.item.type}" />
+				<td th:text="${currentItem.borrower.username}" />
+				<td th:text="${currentItem.borrowDate}" />
+				<td th:text="${currentItem.dueDate}" />
+			<tr>
 		</table>
 		</div>
-		<div class="itemsout">
-		<h2>My Items currently lent out</h2>
-			<table>
-				<tr>
-					<th>Item</th>
-					<th>Type</th>
-					<th>Lent to</th>
-				</tr>
-				<tr>
-				<tr th:each="currentItem : ${lentItems}" th:unless="${lentItems == null}">
-					<td th:text="${currentItem.userItem.item.name}" />
-					<td th:text="${currentItem.userItem.item.type}" />
-					<td th:text="${currentItem.borrower.username}" />
-				</tr>
-			</table>
+		
+		<div class="itemsuploaded">
+			<form th:action="@{/saveReturnItem}" method='POST' th:object="${currentItem}" style="margin-left:85px; margin-top: 50px;">
+				<div>Return Date: <input type="date" th:field="*{returnDate}" id="returnDate" /></div>
+				<div><input type="hidden" th:field="*{id}" th:value="${currentItem.id}" id="id" /></div>
+				<div><input type="submit" value="submit"/></div>
+			</form>
 		</div>
+		
 	</div>
 </div>
 

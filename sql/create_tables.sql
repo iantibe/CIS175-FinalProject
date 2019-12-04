@@ -12,28 +12,33 @@ CREATE TABLE item (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE user_item (
+	id INT NOT NULL AUTO_INCREMENT,
+	userid INT NOT NULL,
+	itemid INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(userid) REFERENCES user(id),
+	FOREIGN KEY(itemid) REFERENCES item(id)
+);
+
 CREATE TABLE borrow_item (
     id INT NOT NULL AUTO_INCREMENT,
-	item_id INT NOT NULL,
-	lender_id INT NOT NULL,
-	borrower_id INT,
+	useritem_id INT NOT NULL,
+	borrower_id INT NOT NULL,
 	borrow_date DATE,
 	due_date DATE,
 	return_date DATE,
     PRIMARY KEY(id),
-    FOREIGN KEY(item_id) REFERENCES item(id),
-    FOREIGN KEY(lender_id) REFERENCES user(id),
+    FOREIGN KEY(useritem_id) REFERENCES user_item(id),
 	FOREIGN KEY(borrower_id) REFERENCES user(id)
 );
 
 CREATE TABLE borrow_rating (
     id INT NOT NULL AUTO_INCREMENT,
-	lender_id INT NOT NULL,
-	borrower_id INT NOT NULL,
+	borrowitem_id INT NOT NULL,
 	rating INT,
     PRIMARY KEY(id),
-    FOREIGN KEY(lender_id) REFERENCES user(id),
-	FOREIGN KEY(borrower_id) REFERENCES user(id)
+    FOREIGN KEY(borrowitem_id) REFERENCES borrow_item(id)
 );
 
 INSERT INTO user (username, password)
@@ -41,17 +46,62 @@ VALUES ('james_bond','007');
 INSERT INTO user (username, password)
 VALUES ('SpongeRobertPants','1234');
 INSERT INTO user (username, password)
-VALUES ('tokoyo_sexwhistle','abcd');
+VALUES ('abe_lincoln','abcd');
+INSERT INTO user (username, password)
+VALUES ('sk8r_boi23','1234');
+INSERT INTO user (username, password)
+VALUES ('kewlD00d','abcd');
+INSERT INTO user (username, password)
+VALUES ('sports_fan','1234');
+INSERT INTO user (username, password)
+VALUES ('another_user','abcd');
 
-INSERT INTO item (name, type)
+INSERT INTO item (name, type) 
 VALUES ('Dune', 'Book');
+INSERT INTO item (name, type) 
+VALUES ('Jurrasic Park', 'Book');
+INSERT INTO item (name, type)
+VALUES ('Catcher in the Rye', 'Book');
+INSERT INTO item (name, type)
+VALUES ('Websters Dictionary', 'Book');
 INSERT INTO item (name, type)
 VALUES ('Nintendo Switch', 'Game System');
 INSERT INTO item (name, type)
-VALUES ('Sweet Shirt', 'Shirt');
+VALUES ('Xbox One', 'Game System');
+INSERT INTO item (name, type)
+VALUES ('Sweet Shirt', 'Clothes');
 INSERT INTO item (name, type)
 VALUES ('Underpants', 'Clothes');
+INSERT INTO item (name, type)
+VALUES ('Hoodie', 'Clothes');
 INSERT INTO item (name, type)
 VALUES ('Toothbrush', 'Utensil');
 INSERT INTO item (name, type)
 VALUES ('Hopes and Dreams', 'Abstract Concept');
+
+INSERT INTO user_item (userid, itemid)
+VALUES (1,1);
+INSERT INTO user_item (userid, itemid)
+VALUES (1,2);
+INSERT INTO user_item (userid, itemid)
+VALUES (1,5);
+INSERT INTO user_item (userid, itemid)
+VALUES (1,8);
+INSERT INTO user_item (userid, itemid)
+VALUES (3,3);
+INSERT INTO user_item (userid, itemid)
+VALUES (3,4);
+INSERT INTO user_item (userid, itemid)
+VALUES (3,7);
+INSERT INTO user_item (userid, itemid)
+VALUES (3,10);
+INSERT INTO user_item (userid, itemid)
+VALUES (3,11);
+
+INSERT INTO borrow_item (useritem_id, borrower_id, borrow_date, due_date)
+VALUES (1, 4, DATE("2019-01-10"), DATE("2019-03-01"));
+INSERT INTO borrow_item (useritem_id, borrower_id, borrow_date, due_date, return_date)
+VALUES (2, 5, DATE("2019-03-24"), DATE("2019-05-01"), DATE("2019-04-14"));
+
+INSERT INTO borrow_rating (borrowitem_id, rating)
+VALUES (2, 5);
