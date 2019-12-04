@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 import project.beans.BorrowItem;
 import project.beans.BorrowRating;
+import project.beans.Item;
 import project.beans.User;
 import project.beans.UserItem;
 import project.repository.BorrowItemRepository;
@@ -326,5 +328,31 @@ public class WebController {
 	public String viewAllBorrowers(Model model) {
 		model.addAttribute("allItems", ur.findAll());
 		return "viewAllBorrowers";
+	}
+	
+	//Manage items and choose who the item belongs to
+	@GetMapping("/manage")
+	public String addNewItems(Model model, HttpServletRequest request) {
+		Item i = new Item();
+		model.addAttribute("newItems", i);
+		
+		return "manage";
+	}
+	
+	@PostMapping("/manage")
+	public String addNewItems(@ModelAttribute Item i, Model model, HttpServletRequest request) {
+		ir.save(i);
+
+		//Grabs current user and saves that as the owner of the item in the table
+		Long currentUserId = (Long) request.getSession().getAttribute("logId");
+		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
+		
+		UserItem itemOwner = new UserItem();
+		itemOwner.setItem(i);
+		itemOwner.setUser(currentUser);
+		uir.save(itemOwner);
+		
+		
+		return returnHome(model, request);
 	}
 }
