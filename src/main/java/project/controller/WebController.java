@@ -351,14 +351,18 @@ public class WebController {
 		List<User> userList = ur.findAll();
 		List<UserRatingModel> userRatingList = new ArrayList<UserRatingModel>();
 		System.out.println(brr.findByUserID(1));
+		
 		for(User u: userList ) {
+			System.out.println("User ID: " + u.getId());
 			UserRatingModel temp = new UserRatingModel();
 			temp.setUserName(u.getUsername());
-			//temp.setRating(brr.findByUserID(u.getId()));
+			String tempRating = "";
+			tempRating += brr.findByUserID((int)u.getId());
+			temp.setRating(tempRating);
 			userRatingList.add(temp);
 		}
 		
-		model.addAttribute("allItems", userList);
+		model.addAttribute("allItems", userRatingList);
 		return "viewAllBorrowers";
 	}
 	

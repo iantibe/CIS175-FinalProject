@@ -35,8 +35,8 @@
 			<form>
 				<table>
 					<tr th:each="currentUsers : ${allItems}" >
- 					<td th:text="${currentUsers.id}" />
-    				<td th:text="${currentUsers.username}" />
+    				<td th:text="${currentUsers.userName}" />
+    				<td th:text="${currentUsers.rating}" />
    					
 					</tr>
 					</table>
