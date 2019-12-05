@@ -12,7 +12,7 @@ import project.beans.UserItem;
 
 @Repository
 public interface BorrowItemRepository extends JpaRepository<BorrowItem, Long> {
-	BorrowItem findByUserItem(UserItem ui);
+	List<BorrowItem> findByUserItem(UserItem ui);
 	List<BorrowItem> findByBorrower(User b);
 	List<BorrowItem> findByUserItemAndReturnDate(UserItem u, LocalDate date);
 }
