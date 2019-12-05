@@ -21,6 +21,7 @@ import project.beans.BorrowRating;
 import project.beans.Item;
 import project.beans.User;
 import project.beans.UserItem;
+import project.beans.UserRatingModel;
 import project.repository.BorrowItemRepository;
 import project.repository.BorrowRatingRepository;
 import project.repository.ItemRepository;
@@ -327,6 +328,15 @@ public class WebController {
 	@GetMapping("/viewAllBorrowers")
 	public String viewAllBorrowers(Model model) {
 		List<User> userList = ur.findAll();
+		List<UserRatingModel> userRatingList = new ArrayList<UserRatingModel>();
+		System.out.println(brr.findByUserID(1));
+		for(User u: userList ) {
+			UserRatingModel temp = new UserRatingModel();
+			temp.setUserName(u.getUsername());
+			//temp.setRating(brr.findByUserID(u.getId()));
+			userRatingList.add(temp);
+		}
+		
 		model.addAttribute("allItems", userList);
 		return "viewAllBorrowers";
 	}
