@@ -76,9 +76,14 @@ public class WebController {
 					List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
 					for (UserItem i : userItems) {
 						if (bir.findByUserItem(i) != null) {
-							BorrowItem temp = bir.findByUserItem(i);
-							if (temp.getReturnDate() == null) {
-								itemsLentOut.add(bir.findByUserItem(i));
+							List<BorrowItem> userBorrowItems = bir.findByUserItem(i);
+							
+							if (userBorrowItems != null) {
+								for (BorrowItem bi : userBorrowItems) {
+									if (bi.getReturnDate() == null) {
+										itemsLentOut.add(bi);
+									}
+								}
 							}
 						}
 					}
@@ -109,11 +114,17 @@ public class WebController {
 
 			List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
 			for (UserItem i : userItems) {
-				if (bir.findByUserItem(i) != null) {
-					BorrowItem temp = bir.findByUserItem(i);
-					if (temp.getReturnDate() == null) {
-						itemsLentOut.add(bir.findByUserItem(i));
+				List<BorrowItem> userBorrowItems = bir.findByUserItem(i);
+				if (userBorrowItems != null) {
+					BorrowItem temp = null;
+					for (BorrowItem bi : userBorrowItems) {
+						if (bi.getReturnDate() == null) {
+							if (bi.getBorrowDate() != null) {
+								itemsLentOut.add(bi);
+							}
+						}
 					}
+	
 				}
 			}
 			model.addAttribute("lentItems", itemsLentOut);
@@ -166,12 +177,15 @@ public class WebController {
 
 					List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
 					for (UserItem i : userItems) {
-						if (bir.findByUserItem(i) != null) {
-							BorrowItem temp = bir.findByUserItem(i);
-
-							if (temp.getReturnDate() == null) {
-								itemsLentOut.add(temp);
+						List<BorrowItem> userBorrowItems = bir.findByUserItem(i);
+						if (userBorrowItems != null) {
+							BorrowItem temp = null;
+							for (BorrowItem bi : userBorrowItems) {
+								if (bi.getReturnDate() == null) {
+									itemsLentOut.add(bi);
+								}
 							}
+			
 						}
 					}
 					model.addAttribute("lentItems", itemsLentOut);
@@ -207,12 +221,15 @@ public class WebController {
 			List<UserItem> userItems = uir.findByUser(currentUser);
 			List<BorrowItem> itemsLentOut = new ArrayList<BorrowItem>();
 			for (UserItem i : userItems) {
-				if (bir.findByUserItem(i) != null) {
-					BorrowItem temp = bir.findByUserItem(i);
-
-					if (temp.getReturnDate() == null) {
-						itemsLentOut.add(temp);
+				List<BorrowItem> userBorrowItems = bir.findByUserItem(i);
+				if (userBorrowItems != null) {
+					BorrowItem temp = null;
+					for (BorrowItem bi : userBorrowItems) {
+						if (bi.getReturnDate() == null) {
+							itemsLentOut.add(bi);
+						}
 					}
+	
 				}
 			}
 			model.addAttribute("lentItems", itemsLentOut);
@@ -238,6 +255,10 @@ public class WebController {
 			updateThis.setReturnDate(i.getReturnDate());
 			sendTo = "rateBorrower";
 			bir.save(updateThis);
+			//BorrowItem newBorrow = new BorrowItem();
+			//newBorrow.setBorrower(updateThis.getBorrower());
+			//newBorrow.setUserItem(updateThis.getUserItem());
+			//bir.save(newBorrow);
 			
 			BorrowRating newRating = new BorrowRating ();
 			newRating.setBorrowItem(updateThis);
