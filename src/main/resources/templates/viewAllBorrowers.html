@@ -35,10 +35,10 @@
 			<form>
 				<table>
 				<!-- This Table isn't working yet, I am going to work on it some more tomorrow, Daniel -->
-					<tr th:each="currentUsers : ${user}" >
+					<tr th:each="currentUsers : ${allItems}" >
  					<td th:text="${currentUsers.id}" />
     				<td th:text="${currentUsers.username}" />
-   					<td><a href="/viewRatings">View All Ratings</a></td>
+   					
 					</tr>
 					</table>
 					</form>

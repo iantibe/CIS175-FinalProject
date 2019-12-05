@@ -326,7 +326,8 @@ public class WebController {
 	}
 	@GetMapping("/viewAllBorrowers")
 	public String viewAllBorrowers(Model model) {
-		model.addAttribute("allItems", ur.findAll());
+		List<User> userList = ur.findAll();
+		model.addAttribute("allItems", userList);
 		return "viewAllBorrowers";
 	}
 	
