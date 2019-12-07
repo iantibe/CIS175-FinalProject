@@ -99,9 +99,11 @@ INSERT INTO user_item (userid, itemid)
 VALUES (3,11);
 
 INSERT INTO borrow_item (useritem_id, borrower_id, borrow_date, due_date)
-VALUES (1, 4, DATE("2019-01-10"), DATE("2019-03-01"));
+VALUES (1, 4, DATE("2019-01-10"), DATE("2020-03-01"));
 INSERT INTO borrow_item (useritem_id, borrower_id, borrow_date, due_date, return_date)
 VALUES (2, 5, DATE("2019-03-24"), DATE("2019-05-01"), DATE("2019-04-14"));
+INSERT INTO borrow_item (useritem_id, borrower_id, borrow_date, due_date)
+VALUES (2, 5, DATE("2019-05-10"), DATE("2019-06-01"));
 
 INSERT INTO borrow_rating (borrowitem_id, rating)
 VALUES (2, 5);

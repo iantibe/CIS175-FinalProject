@@ -11,7 +11,7 @@ public interface BorrowRatingRepository extends JpaRepository<BorrowRating, Long
 			"JOIN borrow_item bi ON bi.id = r.borrowitem_id\r\n" + 
 			"JOIN user_item ui ON bi.useritem_id = ui.id\r\n" + 
 			"JOIN user u ON u.id = ui.userid\r\n" + 
-			"WHERE u.id = ?1", nativeQuery=true)
+			"WHERE bi.borrower_id = ?1", nativeQuery=true)
 	double findByUserID(int id);
 
 }

@@ -15,7 +15,8 @@
 
 <div class="infobar">
 	<div class="currentrating">
-	//display current borrow rating here
+		<p th:if="${session.myRating == 0.0}">No Rating</p>
+		<p th:unless="${session.myRating == 0.0}" th:text="${'My Rating: ' + session.myRating}"></p>
 	</div>
 	<div class="name">
 	<h3>Hello,</h3><h3 th:text="${session.currentUsername}"></h3>
@@ -28,6 +29,7 @@
 			<li><a href="manage">Manage items</a></li>
 			<li><a href="lend">Lend Item</a></li>
 			<li><a href="return">Return an Item</a></li>
+			<li><a href="viewAllBorrowers">View User Ratings</a></li>
 			<li><a href="logout">Logout</a></li>
 		</ul>
 	</div>
@@ -52,12 +54,17 @@
 					<th>Item</th>
 					<th>Type</th>
 					<th>Lent to</th>
+					<th>Date Lent</th>
+					<th>Overdue</th>
 				</tr>
 				<tr>
 				<tr th:each="currentItem : ${lentItems}" th:unless="${lentItems == null}">
 					<td th:text="${currentItem.userItem.item.name}" />
 					<td th:text="${currentItem.userItem.item.type}" />
 					<td th:text="${currentItem.borrower.username}" />
+					<td th:text="${currentItem.borrowDate}" />
+					<td th:if="${currentItem.dueDate < session.currentDate}" style="background-color: #ff6666;"> Y </td>
+					<td th:unless="${currentItem.dueDate < session.currentDate}"> N </td>
 				</tr>
 			</table>
 		</div>

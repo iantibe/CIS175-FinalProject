@@ -13,15 +13,6 @@
 	<h2>Lend or borrow items from our community of users</h2>
 </header>
 
-<div class="infobar">
-	<div class="currentrating">
-	//display current borrow rating here
-	</div>
-	<div class="name">
-	<h3>Hello,</h3><h3 th:text="${session.currentUsername}"></h3>
-	</div>
-</div>
-
 <div class="mainsection">
 	<div class="menu">
 		<ul>
@@ -36,7 +27,7 @@
 		</div>
 		<div>
 			<form th:action="@{/saveRating}" method='POST' th:object="${borrowrating}" style="margin-left:85px; margin-top: 50px;">
-				<div>Rating: <input type="number" name="rating" id="rating" th:field="*{rating}" min="1" max="5" /></div>
+				<div>Rating: <input type="number" name="rating" id="rating" th:field="*{rating}" value="1" min="1" max="5" /></div>
 				<div><input type="hidden" th:field="*{borrowItem.id}" th:value="${borrowrating.borrowItem.id}" id="borrowItemid" /></div>
 				<div><input type="submit" value="submit"/></div>
 			</form>

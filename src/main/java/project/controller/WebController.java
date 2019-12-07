@@ -2,7 +2,6 @@ package project.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,21 +65,15 @@ public class WebController {
 			if (x.getUsername().equals(u.getUsername())) {
 				if (x.getPassword().equals(u.getPassword())) {
 					sendTo = "mainpage";
-
+					
+					// get logged in user's borrower rating to save in session for use later
+					double userRating = brr.findByUserID((int)x.getId());
+					
 					// saving the current user's id and username to session
 					request.getSession().setAttribute("logId", x.getId());
 					request.getSession().setAttribute("currentUsername", x.getUsername());
-
-					// NOTE: In WebController, whenever you need to access the currently logged in
-					// user's ID or username from session
-					// in your method, include the argument "HttpServletRequest request" to get the
-					// current HttpRequest
-					// and then save the attribute as userId =
-					// request.getSession().getAttribute("logId");
-					// or userName = request.getSession().getAttribute("currentUsername");
-					// this will allow any other WebController method to access the currently logged
-					// in user's
-					// id or password.
+					request.getSession().setAttribute("myRating", userRating);
+					request.getSession().setAttribute("currentDate", LocalDate.now());
 
 					List<UserItem> userItems = uir.findByUser(x);
 					model.addAttribute("userItems", userItems);
@@ -183,6 +176,8 @@ public class WebController {
 					// add new user's ID and username to session.
 					request.getSession().setAttribute("logId", x.getId());
 					request.getSession().setAttribute("currentUsername", x.getUsername());
+					request.getSession().setAttribute("myRating", 0.0);
+					request.getSession().setAttribute("currentDate", LocalDate.now());
 
 					List<UserItem> userItems = uir.findByUser(x);
 					model.addAttribute("userItems", userItems);
@@ -283,7 +278,7 @@ public class WebController {
 	@PostMapping("/saveRating")
 	public String saveRating(@ModelAttribute BorrowRating br, Model model, HttpServletRequest request) {
 		brr.save(br);
-		return returnHome(model, request);
+		return returnAnItem(model, request);
 	}
 	
 	@GetMapping("/lend")
@@ -364,7 +359,11 @@ public class WebController {
 		System.out.println(brr.findByUserID(1));
 		
 		for(User u: userList ) {
-			System.out.println("User ID: " + u.getId());
+			// for debugging
+			//System.out.println("User ID: " + u.getId());
+			//System.out.println("User Rating: " + brr.findByUserID((int)u.getId()));
+			//System.out.println("");
+			
 			UserRatingModel temp = new UserRatingModel();
 			temp.setUserName(u.getUsername());
 			String tempRating = "";

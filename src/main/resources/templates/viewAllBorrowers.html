@@ -14,7 +14,8 @@
 </header>
 <div class="infobar">
 	<div class="currentrating">
-	//display current borrow rating here
+		<p th:if="${session.myRating == 0.0}">No Rating</p>
+		<p th:unless="${session.myRating == 0.0}" th:text="${'My Rating: ' + session.myRating}"></p>
 	</div>
 	<div class="name">
 	<h3>Hello,</h3><h3 th:text="${session.currentUsername}"></h3>
@@ -34,9 +35,13 @@
 		<div>
 			<form>
 				<table>
+					<tr>
+					<th>Username</th>
+					<th>Average Rating</th>
+					</tr>
 					<tr th:each="currentUsers : ${allItems}" >
     				<td th:text="${currentUsers.userName}" />
-    				<td th:text="${currentUsers.rating}" />
+    				<td th:text="((${currentUsers.rating} == '0.0')? 'No Rating' : ${currentUsers.rating})" />
    					
 					</tr>
 					</table>
