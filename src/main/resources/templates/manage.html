@@ -23,13 +23,16 @@
 	</div>
 	
 	<div class="content">
-		<div class = "form">
-		<form name='f' th:object="${newItems}" th:action="@{/manage}"
+		<div class = "form" style="width: 300px; margin: auto; margin-top: 30px;">
+		<form name='f' th:object="${newItems}"enctype="multipart/form-data" th:action="@{/manage}"
 		method='POST'>
 		Name: <input name="name" size="30"> <br />
 		Type: <input name="type" size="30"><br />
+		File To Upload <input type="file" name="image">
 		<input name="submit" type="submit" value="submit" />
+		
 		</form>
+		
 		</div>
 	</div>
 </div>

@@ -7,5 +7,7 @@ import project.beans.Item;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long>{
+	
+	Item findByName(String name);
 
 }

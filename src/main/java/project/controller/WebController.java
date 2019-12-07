@@ -1,5 +1,6 @@
 package project.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,16 +15,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
+import project.beans.AddItem;
 import project.beans.BorrowItem;
 import project.beans.BorrowRating;
+import project.beans.Image;
 import project.beans.Item;
 import project.beans.User;
 import project.beans.UserItem;
 import project.beans.UserRatingModel;
 import project.repository.BorrowItemRepository;
 import project.repository.BorrowRatingRepository;
+import project.repository.ImageRepository;
 import project.repository.ItemRepository;
 import project.repository.UserItemRepository;
 import project.repository.UserRepository;
@@ -44,6 +52,9 @@ public class WebController {
 	
 	@Autowired
 	BorrowRatingRepository brr;
+	
+	@Autowired
+	ImageRepository img;
 
 	@PostMapping("/login")
 	public String userLogin(@ModelAttribute User u, Model model, HttpServletRequest request) {
@@ -280,7 +291,7 @@ public class WebController {
 		Long currentUserId = (Long) request.getSession().getAttribute("logId");
 		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
 		
-		//remove yourself from list. You can left stuff to yourself
+		//remove yourself from list. You can lend stuff to yourself
 		List<User> userList = ur.findAll();
 		userList.remove(userList.indexOf(currentUser));
 		
@@ -371,14 +382,29 @@ public class WebController {
 	public String addNewItems(Model model, HttpServletRequest request) {
 		Item i = new Item();
 		model.addAttribute("newItems", i);
-		
 		return "manage";
 	}
 	
 	@PostMapping("/manage")
-	public String addNewItems(@ModelAttribute Item i, Model model, HttpServletRequest request) {
+	public String addNewItems(@RequestParam("image") MultipartFile fileToGet, @ModelAttribute Item i,  Model model, HttpServletRequest request)  {
+				
 		ir.save(i);
-
+		
+		//start image code
+		Item itemToGet = ir.findByName(i.getName());
+		Image imageToSave = new Image();
+		try {
+			imageToSave.setImage(fileToGet.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		imageToSave.setImageid(itemToGet.getId());
+		
+		//comment out save function until image code is fully implemented
+		//img.save(imageToSave);
+		//end image code
+		
 		//Grabs current user and saves that as the owner of the item in the table
 		Long currentUserId = (Long) request.getSession().getAttribute("logId");
 		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
@@ -391,4 +417,13 @@ public class WebController {
 		
 		return returnHome(model, request);
 	}
+	
+	@GetMapping("/image/{imageid}")
+	@ResponseBody
+	public byte[] getImage(@PathVariable("imageid") long imageid ) {
+		Image item = img.findByImageid(imageid);
+			
+		return item.getImage();
+	}
+	
 }
