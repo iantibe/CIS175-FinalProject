@@ -185,3 +185,16 @@ ul {
 	padding-left: 0px;
 	font-size: 20px;
 }
+
+figure {
+	border-style: solid;
+	width: 300px;
+	border-width: 2px;
+	
+	
+}
+
+figcaption {
+	padding-left: 15px;
+}
+

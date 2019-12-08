@@ -1,5 +1,6 @@
 package project.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -302,6 +303,7 @@ public class WebController {
 		}
 				
 		model.addAttribute("item", displayList);
+		model.addAttribute("pic", displayList);
 		
 		return "borrow";
 	}
@@ -349,7 +351,8 @@ public class WebController {
 		}
 				
 		model.addAttribute("item", displayList);
-				
+		model.addAttribute("pic", displayList);		
+		
 		return "borrow";
 	}
 	@GetMapping("/viewAllBorrowers")
@@ -400,8 +403,8 @@ public class WebController {
 		}
 		imageToSave.setImageid(itemToGet.getId());
 		
-		//comment out save function until image code is fully implemented
-		//img.save(imageToSave);
+		
+		img.save(imageToSave);
 		//end image code
 		
 		//Grabs current user and saves that as the owner of the item in the table
@@ -421,8 +424,8 @@ public class WebController {
 	@ResponseBody
 	public byte[] getImage(@PathVariable("imageid") long imageid ) {
 		Image item = img.findByImageid(imageid);
-			
 		return item.getImage();
+				
 	}
 	
 }

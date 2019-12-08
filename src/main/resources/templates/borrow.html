@@ -49,6 +49,15 @@
 		</div>
 		<div class="resultmessage">
 			<h2 th:text="${result}"></h2>
+		</div>
+		<div class="pics">
+			<figure th:each="eachitem : ${pic}">
+				<img width="300" height="300" alt="Picutre Not Available" th:src="${'/image' + '/' + eachitem.item.id}">
+				<figcaption>
+				<h3>Item:</h3><h4 th:text="${eachitem.item.name}"></h4>
+				<h3>Type:</h3><h4 th:text="${eachitem.item.type}"></h4>
+				</figcaption>
+			</figure>
 		</div>	
 	</div>
 	

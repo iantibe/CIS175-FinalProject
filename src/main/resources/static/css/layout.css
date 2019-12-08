@@ -75,3 +75,9 @@ form {
 	margin-top: 50px;
 	text-align: center;
 }
+
+.pics {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
