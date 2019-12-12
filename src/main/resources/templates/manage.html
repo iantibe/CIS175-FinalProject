@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Manage Item</title>
@@ -12,7 +12,6 @@
 	<h1>Bitch, Where's my stuff</h1>
 	<h2>Manage Items</h2>
 </header>
-
 <div class="mainsection">
 	<div class="menu">
 		<ul>
@@ -21,21 +20,32 @@
 			<li><a href="">Logout</a></li>
 		</ul>
 	</div>
-	
 	<div class="content">
-		<div class = "form" style="width: 300px; margin: auto; margin-top: 30px;">
-		<form name='f' th:object="${newItems}"enctype="multipart/form-data" th:action="@{/manage}"
-		method='POST'>
-		Name: <input name="name" size="30"> <br />
-		Type: <input name="type" size="30"><br />
-		File To Upload <input type="file" name="image">
-		<input name="submit" type="submit" value="submit" />
-		
-		</form>
-		
+		<div class="itemsuploaded">
+			<h2>Add Item to Lend</h2>
+			<div class="form" style="width: 300px; margin: auto; margin-top: 30px;">
+			<form name='f' th:object="${newItems}"enctype="multipart/form-data" th:action="@{/manage}" method='POST'>
+				Name: <input name="name" size="30"> <br />
+				Type: <input name="type" size="30"><br />
+				File To Upload <input type="file" name="image">
+				<input name="submit" type="submit" value="submit" />
+			</form>
+			</div>
+			<h2>Delete Existing Item</h2>
+			<table>
+			<tr>
+				<th>Item</th>
+				<th>Type</th>
+				<th> </th>
+			</tr>
+			<tr th:each="currentItem : ${userItems}" th:unless="${userItems == null}">
+				<td th:text="${currentItem.item.name}" />
+				<td th:text="${currentItem.item.type}" />
+				<td><a th:href="@{/delete{id}(id=${currentItem.item.id})}">Delete</a></td>
+    		</tr>
+			</table>
 		</div>
 	</div>
 </div>
-
 </body>
 </html>

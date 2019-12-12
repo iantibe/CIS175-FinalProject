@@ -23,8 +23,8 @@ CREATE TABLE user_item (
 	userid INT NOT NULL,
 	itemid INT NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY(userid) REFERENCES user(id),
-	FOREIGN KEY(itemid) REFERENCES item(id)
+	FOREIGN KEY(userid) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY(itemid) REFERENCES item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE borrow_item (
@@ -35,8 +35,8 @@ CREATE TABLE borrow_item (
 	due_date DATE,
 	return_date DATE,
     PRIMARY KEY(id),
-    FOREIGN KEY(useritem_id) REFERENCES user_item(id),
-	FOREIGN KEY(borrower_id) REFERENCES user(id)
+    FOREIGN KEY(useritem_id) REFERENCES user_item(id) ON DELETE CASCADE,
+    FOREIGN KEY(borrower_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE borrow_rating (
@@ -44,7 +44,7 @@ CREATE TABLE borrow_rating (
 	borrowitem_id INT NOT NULL,
 	rating INT,
     PRIMARY KEY(id),
-    FOREIGN KEY(borrowitem_id) REFERENCES borrow_item(id)
+    FOREIGN KEY(borrowitem_id) REFERENCES borrow_item(id) ON DELETE CASCADE
 );
 
 INSERT INTO user (username, password)

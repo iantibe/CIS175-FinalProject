@@ -120,7 +120,7 @@ header {
 
 .content {
 	width: 90%;
-	height: 500px;
+	height: auto;
 	border-style: solid;
 	border-radius: 25px;
 	margin-left: 15px;

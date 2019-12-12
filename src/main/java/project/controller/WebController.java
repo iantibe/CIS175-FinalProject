@@ -384,6 +384,11 @@ public class WebController {
 	public String addNewItems(Model model, HttpServletRequest request) {
 		Item i = new Item();
 		model.addAttribute("newItems", i);
+		
+		// Grab current user and populate all items belonging to them in a table
+		Long currentUserId = (Long) request.getSession().getAttribute("logId");
+		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
+		model.addAttribute("userItems", uir.findByUser(currentUser));
 		return "manage";
 	}
 	
@@ -427,5 +432,41 @@ public class WebController {
 		return item.getImage();
 				
 	}
-	
+		
+	@GetMapping("/delete{id}")
+	public String deleteItem(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+		// Pull Item object using id given by page
+		Item i = ir.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Item Id:" + id));
+		// Create list of UserItem objects that have the Item to delete attached to them
+		List<UserItem> ui = uir.findByItem(i);
+		// Only proceed if there is something in the UserItem object list
+		if (!ui.isEmpty()) {
+			// Create list of all items in BorrowItems table
+			List<BorrowItem> allBorrowed = bir.findAll();
+			int flag;
+			// Iterate through UserItem list and check each one against BorrowItem list
+			// -If any of them match up, check to see if it is currently being borrowed (has a lend date but not return date)
+			// -If an item is currently being borrowed, it cannot be deleted and will be flagged as such
+			// -Otherwise, if the flag check passes and the UserItem key doesn't have a corresponding open lend,
+			//   delete the item with cascading effects to the database given the altering of the SQL
+			for (UserItem usIt : ui) {
+				flag = 1;
+				for (BorrowItem bi : allBorrowed) {
+					if (usIt == bi.getUserItem()) {
+						if (bi.getBorrowDate() != null && bi.getReturnDate() == null) {
+							flag = 0;
+						}
+					}
+				}
+				if (flag == 1) {
+					ir.delete(i);
+				}
+			}
+		}
+		// Grab current user to re-populate table with items they own, now minus the deleted one
+		Long currentUserId = (Long) request.getSession().getAttribute("logId");
+		User currentUser = ur.findById(currentUserId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + currentUserId));
+		model.addAttribute("userItems", uir.findByUser(currentUser));
+		return "manage";
+	}
 }
